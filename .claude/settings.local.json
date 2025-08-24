@@ -58,7 +58,8 @@
       "Bash(start http://localhost:3014/support)",
       "Bash(docker:*)",
       "Bash(npm prune:*)",
-      "Bash(npm update:*)"
+      "Bash(npm update:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []
