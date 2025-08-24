@@ -143,16 +143,12 @@ export default function LandingPage() {
                   
                   {/* Inspection Image Placeholder */}
                   <div className="relative bg-gradient-to-br from-slate-50 to-slate-100 aspect-[4/3]">
-                    {/* Replace this div with your actual inspection image */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                          <Camera className="w-8 h-8 text-emerald-600" />
-                        </div>
-                        <p className="text-slate-600 text-lg font-medium">Inspection Report Example</p>
-                        <p className="text-slate-500 text-sm mt-1">Professional documentation with photos</p>
-                      </div>
-                    </div>
+                    {/* Actual inspection image */}
+                    <img 
+                      src="/images/sampleinspection.png" 
+                      alt="Professional sprinkler inspection report showing zone mapping, issue documentation, and photo evidence" 
+                      className="w-full h-full object-cover"
+                    />
                     
                     {/* Overlay badges to show features */}
                     <div className="absolute top-4 left-4">
