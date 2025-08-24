@@ -551,7 +551,6 @@ export default function LandingPage() {
               <ul className="space-y-2 text-slate-400">
                 <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
                 <li><a href="#workflow" className="hover:text-white transition-colors">How It Works</a></li>
-                <li><a href="#results" className="hover:text-white transition-colors">Results</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
               </ul>
             </div>
@@ -559,8 +558,6 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-4">Support</h4>
               <ul className="space-y-2 text-slate-400">
                 <li><Link href="/support" className="hover:text-white transition-colors">Help Center</Link></li>
-                <li><a href="#" className="hover:text-white transition-colors">Training Videos</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Phone Support</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
               </ul>
             </div>
@@ -568,7 +565,6 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-slate-400">
                 <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Industry Blog</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Case Studies</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
               </ul>
