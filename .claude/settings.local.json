@@ -50,7 +50,9 @@
       "Bash(npm run seed-test-data:*)",
       "Bash(PORT=3009 npm run dev)",
       "Bash(ping:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(PORT=3012 npm run dev)",
+      "Bash(start http://localhost:3013/auth/login)"
     ],
     "deny": [],
     "ask": []
