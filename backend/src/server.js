@@ -34,17 +34,43 @@ const PORT = process.env.PORT || 3000;
 // Security and performance middleware
 app.use(helmet());
 app.use(compression());
-app.use(cors({
-  origin: [
-    'http://localhost:3008',
-    'http://localhost:3009',
-    'http://localhost:3012',
-    'http://localhost:3013',
-    'http://localhost:3014',
-    process.env.FRONTEND_URL
-  ].filter(Boolean),
+// Configure CORS for development and production
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Development origins
+    const devOrigins = [
+      'http://localhost:3008',
+      'http://localhost:3009',
+      'http://localhost:3012',
+      'http://localhost:3013',
+      'http://localhost:3014'
+    ];
+    
+    // Production origins
+    const prodOrigins = [
+      process.env.FRONTEND_URL,
+      process.env.FRONTEND_DOMAIN,
+      // Add any additional production domains
+    ].filter(Boolean);
+    
+    const allowedOrigins = [...devOrigins, ...prodOrigins];
+    
+    // Check if origin is allowed or if it's a Render.com preview URL
+    if (allowedOrigins.indexOf(origin) !== -1 || origin.includes('.onrender.com')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-}));
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
+app.use(cors(corsOptions));
 
 // Rate limiting
 const limiter = rateLimit({

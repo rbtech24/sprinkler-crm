@@ -39,14 +39,20 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 # Switch to non-root user
 USER nextjs
 
-# Expose port
-EXPOSE 3007
+# Use environment PORT or default to 3000
+ENV PORT=${PORT:-3000}
+ENV NODE_ENV=production
+ENV HOSTNAME="0.0.0.0"
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+# Expose port
+EXPOSE $PORT
+
+# Health check - simple HTTP request to root
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
     CMD node -e "
         const http = require('http');
-        const options = { hostname: 'localhost', port: 3007, path: '/api/health', timeout: 2000 };
+        const port = process.env.PORT || 3000;
+        const options = { hostname: 'localhost', port: port, path: '/', timeout: 2000 };
         const req = http.request(options, (res) => process.exit(res.statusCode === 200 ? 0 : 1));
         req.on('error', () => process.exit(1));
         req.end();

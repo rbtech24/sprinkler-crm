@@ -22,6 +22,9 @@ RUN npm ci --only=production
 COPY src/ ./src/
 COPY data/ ./data/
 
+# Create uploads directory
+RUN mkdir -p uploads
+
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S sprinkler -u 1001
@@ -32,14 +35,16 @@ RUN chown -R sprinkler:nodejs /app
 # Switch to non-root user
 USER sprinkler
 
-# Expose port
-EXPOSE 3006
+# Use environment PORT or default to 3000
+EXPOSE $PORT
+ENV PORT=${PORT:-3000}
 
-# Health check
+# Health check using environment PORT
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD node -e "
         const http = require('http');
-        const options = { hostname: 'localhost', port: 3006, path: '/health', timeout: 2000 };
+        const port = process.env.PORT || 3000;
+        const options = { hostname: 'localhost', port: port, path: '/health', timeout: 2000 };
         const req = http.request(options, (res) => process.exit(res.statusCode === 200 ? 0 : 1));
         req.on('error', () => process.exit(1));
         req.end();

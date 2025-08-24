@@ -1,0 +1,62 @@
+# Render.com Infrastructure as Code Configuration
+# This file defines the complete deployment setup for SprinklerPro CRM
+
+services:
+  # Backend API Service
+  - type: web
+    name: sprinkler-crm-backend
+    env: node
+    region: oregon
+    plan: starter
+    buildCommand: npm ci --only=production
+    startCommand: node src/server.js
+    healthCheckPath: /health
+    rootDir: backend
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:/opt/render/project/src/data/sprinkler_repair.db
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: sprinkler-crm-frontend
+          property: host
+      - key: BASE_URL
+        fromService:
+          type: web
+          name: sprinkler-crm-backend
+          property: host
+
+  # Frontend Web Service
+  - type: web
+    name: sprinkler-crm-frontend
+    env: node
+    region: oregon
+    plan: starter
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    rootDir: frontend
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: sprinkler-crm-backend
+          property: host
+      - key: PORT
+        value: 3000
+
+# Optional: PostgreSQL Database (uncomment for production)
+# databases:
+#   - name: sprinkler-crm-db
+#     databaseName: sprinkler_repair_saas
+#     user: sprinkler_user
+#     region: oregon
+#     plan: starter
