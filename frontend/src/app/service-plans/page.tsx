@@ -65,7 +65,7 @@ export default function ServicePlansPage() {
   const fetchServicePlans = async () => {
     try {
       const token = localStorage.getItem('auth_token')
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
       const response = await fetch(`${apiUrl}/service-plans`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })

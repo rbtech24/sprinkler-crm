@@ -68,7 +68,7 @@ export function CompanyDashboard({ user, className = '' }: CompanyDashboardProps
       const token = localStorage.getItem('auth_token')
       const headers = { 'Authorization': `Bearer ${token}` }
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
       const [kpiResponse, todayResponse, estimatesResponse] = await Promise.all([
         fetch(`${apiUrl}/dashboard/company/kpis`, { headers }),
         fetch(`${apiUrl}/dashboard/company/today`, { headers }),

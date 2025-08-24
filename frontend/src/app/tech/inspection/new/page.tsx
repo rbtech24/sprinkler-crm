@@ -14,7 +14,7 @@ function InspectionFormWrapper() {
 
   const handleInspectionSubmit = async (inspectionData: IrrigationInspection) => {
     try {
-      const response = await fetch('http://localhost:3000/api/inspections-mobile', {
+      const response = await fetch('/api/inspections-mobile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

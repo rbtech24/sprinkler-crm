@@ -55,7 +55,7 @@ export function TechDashboard({ user, className = '' }: TechDashboardProps) {
   const fetchTechData = async () => {
     try {
       const token = localStorage.getItem('auth_token')
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
       const response = await fetch(`${apiUrl}/dashboard/tech/today`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -85,7 +85,7 @@ export function TechDashboard({ user, className = '' }: TechDashboardProps) {
   const updateJobStatus = async (jobId: number, newStatus: string) => {
     try {
       const token = localStorage.getItem('auth_token')
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
       await fetch(`${apiUrl}/dashboard/jobs/${jobId}/status`, {
         method: 'PUT',
         headers: {

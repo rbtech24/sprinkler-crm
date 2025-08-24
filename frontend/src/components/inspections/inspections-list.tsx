@@ -70,7 +70,7 @@ export function InspectionsList({ userRole, className }: InspectionsListProps) {
     try {
       setIsLoading(true)
       const token = localStorage.getItem('auth_token')
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
       
       const params = new URLSearchParams()
       if (dateFilter !== 'all') {

@@ -51,7 +51,7 @@ function InspectionWrapper() {
   const loadExistingInspection = async (id: string) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:3000/api/inspections/${id}`, {
+      const response = await fetch(`/api/inspections/${id}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         }
@@ -146,8 +146,8 @@ function InspectionWrapper() {
     setIsLoading(true);
     try {
       const url = inspectionId && inspectionId !== 'new'
-        ? `http://localhost:3000/api/inspections-mobile/${inspectionId}`
-        : 'http://localhost:3000/api/inspections-mobile';
+        ? `/api/inspections-mobile/${inspectionId}`
+        : '/api/inspections-mobile';
       
       const method = inspectionId && inspectionId !== 'new' ? 'PUT' : 'POST';
       
@@ -189,7 +189,7 @@ function InspectionWrapper() {
     if (!inspectionId || inspectionId === 'new') return;
     
     try {
-      await fetch(`http://localhost:3000/api/inspections-mobile/${inspectionId}/autosave`, {
+      await fetch(`/api/inspections-mobile/${inspectionId}/autosave`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ function InspectionWrapper() {
 
   const handleQuoteSave = async (quote: any) => {
     try {
-      const response = await fetch('http://localhost:3000/api/quotes', {
+      const response = await fetch('/api/quotes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -242,7 +242,7 @@ function InspectionWrapper() {
 
   const handleQuoteSend = async (quote: any) => {
     try {
-      const response = await fetch('http://localhost:3000/api/quotes/send', {
+      const response = await fetch('/api/quotes/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -270,7 +270,7 @@ function InspectionWrapper() {
 
   const handlePDFGenerate = async (options: any): Promise<string> => {
     try {
-      const response = await fetch('http://localhost:3000/api/inspections-mobile/pdf', {
+      const response = await fetch('/api/inspections-mobile/pdf', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -296,7 +296,7 @@ function InspectionWrapper() {
 
   const handlePDFEmail = async (pdfUrl: string, emailOptions: any) => {
     try {
-      await fetch('http://localhost:3000/api/inspections-mobile/email-report', {
+      await fetch('/api/inspections-mobile/email-report', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

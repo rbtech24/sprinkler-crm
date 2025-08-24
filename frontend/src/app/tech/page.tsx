@@ -124,7 +124,7 @@ export default function TechMobilePage() {
   const fetchTechData = async () => {
     try {
       const token = localStorage.getItem('auth_token')
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
       const response = await fetch(`${apiUrl}/dashboard/tech/today`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -145,7 +145,7 @@ export default function TechMobilePage() {
   const fetchServicePlans = async () => {
     try {
       const token = localStorage.getItem('auth_token')
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
       const response = await fetch(`${apiUrl}/service-plans/active`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -164,7 +164,7 @@ export default function TechMobilePage() {
   const fetchInspections = async () => {
     try {
       const token = localStorage.getItem('auth_token')
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
       const response = await fetch(`${apiUrl}/inspections?limit=20`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -183,7 +183,7 @@ export default function TechMobilePage() {
   const fetchClients = async () => {
     try {
       const token = localStorage.getItem('auth_token')
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
       const response = await fetch(`${apiUrl}/clients`, {
         headers: { 'Authorization': `Bearer ${token}` }
       })
@@ -201,7 +201,7 @@ export default function TechMobilePage() {
     try {
       setIsCreatingInspection(true)
       const token = localStorage.getItem('auth_token')
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
       
       const response = await fetch(`${apiUrl}/inspections`, {
         method: 'POST',
@@ -238,7 +238,7 @@ export default function TechMobilePage() {
   const startInspection = async (inspectionId: number) => {
     try {
       const token = localStorage.getItem('auth_token')
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
       const response = await fetch(`${apiUrl}/inspections/${inspectionId}/start`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
@@ -267,7 +267,7 @@ export default function TechMobilePage() {
   const sellServicePlan = async (planId: number, customerInfo: any) => {
     try {
       const token = localStorage.getItem('auth_token')
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api'
       const response = await fetch(`${apiUrl}/service-plans/sell`, {
         method: 'POST',
         headers: { 
