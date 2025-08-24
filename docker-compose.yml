@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: sprinkler_repair_saas
+      POSTGRES_USER: sprinkler_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secure_password_123}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sprinkler_user -d sprinkler_repair_saas"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sprinkler_network
+
+  # Backend API
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://sprinkler_user:${POSTGRES_PASSWORD:-secure_password_123}@postgres:5432/sprinkler_repair_saas
+      JWT_SECRET: ${JWT_SECRET}
+      SESSION_SECRET: ${SESSION_SECRET}
+      FRONTEND_URL: http://localhost:3007
+      PORT: 3006
+    ports:
+      - "3006:3006"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - backend_uploads:/app/uploads
+    networks:
+      - sprinkler_network
+
+  # Frontend Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3006/api
+      NEXT_PUBLIC_APP_URL: http://localhost:3007
+    ports:
+      - "3007:3007"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - sprinkler_network
+
+volumes:
+  postgres_data:
+  backend_uploads:
+
+networks:
+  sprinkler_network:
+    driver: bridge

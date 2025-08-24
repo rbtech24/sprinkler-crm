@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Auth</title>
+</head>
+<body>
+    <h1>Auth Debug Tool</h1>
+    
+    <div>
+        <h2>Test Login</h2>
+        <button id="loginBtn">Login as owner@demo.com</button>
+        <button id="checkStorageBtn">Check Storage</button>
+        <button id="clearStorageBtn">Clear Storage</button>
+    </div>
+    
+    <div>
+        <h2>Results</h2>
+        <pre id="output"></pre>
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        
+        function log(message) {
+            output.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
+        }
+        
+        // Check storage on load
+        function checkStorage() {
+            log('=== CHECKING STORAGE ===');
+            log('localStorage.auth_token: ' + localStorage.getItem('auth_token'));
+            log('localStorage.auth-storage: ' + localStorage.getItem('auth-storage'));
+            log('sessionStorage.auth_token: ' + sessionStorage.getItem('auth_token'));
+            
+            // Check if zustand storage exists
+            const authStorage = localStorage.getItem('auth-storage');
+            if (authStorage) {
+                try {
+                    const parsed = JSON.parse(authStorage);
+                    log('Parsed auth-storage:');
+                    log(JSON.stringify(parsed, null, 2));
+                } catch (e) {
+                    log('Error parsing auth-storage: ' + e.message);
+                }
+            }
+        }
+        
+        // Test login function
+        async function testLogin() {
+            try {
+                log('=== ATTEMPTING LOGIN ===');
+                const response = await fetch('http://localhost:3000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'owner@demo.com',
+                        password: 'password'
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log('Login successful!');
+                    log('User: ' + data.user.name + ' (' + data.user.role + ')');
+                    log('Company: ' + data.company.name);
+                    log('Token: ' + data.token.substring(0, 50) + '...');
+                    
+                    // Store token like the app would
+                    localStorage.setItem('auth_token', data.token);
+                    log('Token stored in localStorage');
+                    
+                    // Also store the Zustand way
+                    const authData = {
+                        state: {
+                            user: data.user,
+                            company: data.company,
+                            token: data.token,
+                            isAuthenticated: true
+                        },
+                        version: 0
+                    };
+                    localStorage.setItem('auth-storage', JSON.stringify(authData));
+                    log('Auth data stored in Zustand format');
+                    
+                } else {
+                    log('Login failed: ' + response.status);
+                    log('Response: ' + await response.text());
+                }
+            } catch (error) {
+                log('Login error: ' + error.message);
+            }
+        }
+        
+        function clearStorage() {
+            localStorage.clear();
+            sessionStorage.clear();
+            log('=== STORAGE CLEARED ===');
+        }
+        
+        // Event listeners
+        document.getElementById('loginBtn').addEventListener('click', testLogin);
+        document.getElementById('checkStorageBtn').addEventListener('click', checkStorage);
+        document.getElementById('clearStorageBtn').addEventListener('click', clearStorage);
+        
+        // Check storage on load
+        checkStorage();
+    </script>
+</body>
+</html>

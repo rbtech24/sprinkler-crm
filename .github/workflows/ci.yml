@@ -1,0 +1,357 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # Security scan job
+  security-scan:
+    runs-on: ubuntu-latest
+    name: Security Scan
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+        
+    - name: Install dependencies
+      run: |
+        cd backend
+        npm ci
+        
+    - name: Run npm audit
+      run: |
+        cd backend
+        npm audit --audit-level=moderate
+        
+    - name: Validate environment security
+      run: |
+        cd backend
+        node scripts/generate-secrets.js --validate .env || true
+        
+    - name: Run security linting
+      run: |
+        cd backend
+        npm run lint
+
+  # Backend testing job
+  backend-tests:
+    runs-on: ubuntu-latest
+    name: Backend Tests
+    
+    services:
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
+        ports:
+          - 6379:6379
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+        
+    - name: Install dependencies
+      run: |
+        cd backend
+        npm ci
+        
+    - name: Setup test environment
+      run: |
+        cd backend
+        cp .env .env.test
+        echo "NODE_ENV=test" >> .env.test
+        echo "DATABASE_URL=sqlite::memory:" >> .env.test
+        echo "REDIS_URL=redis://localhost:6379" >> .env.test
+        echo "JWT_SECRET=test-jwt-secret-for-ci" >> .env.test
+        echo "SESSION_SECRET=test-session-secret-for-ci" >> .env.test
+        
+    - name: Run unit tests
+      run: |
+        cd backend
+        npm run test:unit
+        
+    - name: Run integration tests
+      run: |
+        cd backend
+        npm run test:integration
+        
+    - name: Run security tests
+      run: |
+        cd backend
+        npm run test:security || true
+        
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./backend/coverage/lcov.info
+        directory: ./backend/coverage/
+        fail_ci_if_error: false
+
+  # Frontend testing job
+  frontend-tests:
+    runs-on: ubuntu-latest
+    name: Frontend Tests
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+        
+    - name: Install dependencies
+      run: |
+        cd frontend
+        npm ci
+        
+    - name: Run type checking
+      run: |
+        cd frontend
+        npm run type-check
+        
+    - name: Run linting
+      run: |
+        cd frontend
+        npm run lint
+        
+    - name: Run tests (when implemented)
+      run: |
+        cd frontend
+        # npm test -- --coverage --watchAll=false
+        echo "Frontend tests not implemented yet"
+        
+    - name: Build frontend
+      run: |
+        cd frontend
+        npm run build
+
+  # Database migration testing
+  database-migration:
+    runs-on: ubuntu-latest
+    name: Database Migration Tests
+    
+    services:
+      postgres:
+        image: postgres:14-alpine
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: irrigation_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
+        ports:
+          - 5432:5432
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+        
+    - name: Install dependencies
+      run: |
+        cd backend
+        npm ci
+        
+    - name: Test PostgreSQL migration
+      run: |
+        cd database
+        export DATABASE_URL="postgresql://test_user:test_password@localhost:5432/irrigation_test"
+        node migration-runner.js migrate
+        node migration-runner.js status
+        
+    - name: Run migration tests
+      run: |
+        cd database
+        export TEST_DATABASE_URL="postgresql://test_user:test_password@localhost:5432/irrigation_test"
+        node test-migration.js test
+
+  # Build and deployment preparation
+  build-deploy:
+    runs-on: ubuntu-latest
+    name: Build & Deploy Preparation
+    needs: [security-scan, backend-tests, frontend-tests, database-migration]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install backend dependencies
+      run: |
+        cd backend
+        npm ci --production
+        
+    - name: Install frontend dependencies and build
+      run: |
+        cd frontend
+        npm ci
+        npm run build
+        
+    - name: Create deployment artifact
+      run: |
+        mkdir -p deploy
+        cp -r backend deploy/
+        cp -r frontend/out deploy/frontend || cp -r frontend/.next deploy/frontend
+        cp -r database deploy/
+        cp -r scripts deploy/
+        
+    - name: Generate production secrets template
+      run: |
+        cd deploy
+        node backend/scripts/generate-secrets.js --create-env production
+        
+    - name: Upload deployment artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: deployment-package
+        path: deploy/
+        retention-days: 7
+
+  # Performance and load testing (optional)
+  performance-tests:
+    runs-on: ubuntu-latest
+    name: Performance Tests
+    needs: [backend-tests]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+        
+    - name: Install dependencies
+      run: |
+        cd backend
+        npm ci
+        
+    - name: Start test server
+      run: |
+        cd backend
+        npm start &
+        sleep 10
+        
+    - name: Install Artillery.js for load testing
+      run: npm install -g artillery@latest
+      
+    - name: Run basic load tests
+      run: |
+        echo "config:
+          target: 'http://localhost:3000'
+          phases:
+            - duration: 60
+              arrivalRate: 5
+        scenarios:
+          - name: 'Health check'
+            requests:
+              - get:
+                  url: '/health'
+          - name: 'Login flow'
+            requests:
+              - post:
+                  url: '/api/auth/login'
+                  json:
+                    email: 'test@example.com'
+                    password: 'TestPassword123!'
+                  capture:
+                    - json: '$.token'
+                      as: 'token'" > loadtest.yml
+        artillery run loadtest.yml
+
+# Deployment job (for production)
+  deploy-staging:
+    runs-on: ubuntu-latest
+    name: Deploy to Staging
+    needs: [build-deploy]
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+    
+    steps:
+    - name: Download deployment artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: deployment-package
+        path: deploy/
+        
+    - name: Deploy to staging server
+      run: |
+        echo "Deployment to staging would happen here"
+        echo "Steps would include:"
+        echo "- Upload files to staging server"
+        echo "- Run database migrations"
+        echo "- Update environment configuration"
+        echo "- Restart services"
+        echo "- Run smoke tests"
+        
+  deploy-production:
+    runs-on: ubuntu-latest
+    name: Deploy to Production
+    needs: [build-deploy, performance-tests]
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    
+    steps:
+    - name: Download deployment artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: deployment-package
+        path: deploy/
+        
+    - name: Deploy to production server
+      run: |
+        echo "Production deployment would happen here"
+        echo "Steps would include:"
+        echo "- Backup current production database"
+        echo "- Upload new application files"
+        echo "- Run database migrations"
+        echo "- Update environment configuration"
+        echo "- Restart services with zero downtime"
+        echo "- Run post-deployment smoke tests"
+        echo "- Monitor application health"
