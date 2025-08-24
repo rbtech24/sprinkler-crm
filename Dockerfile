@@ -10,8 +10,8 @@ COPY backend/package*.json ./backend/
 COPY frontend/package*.json ./frontend/
 
 # Install dependencies
-RUN cd backend && npm ci --only=production && npm cache clean --force
-RUN cd frontend && npm ci --only=production && npm cache clean --force
+RUN cd backend && npm ci --omit=dev && npm cache clean --force
+RUN cd frontend && npm ci --omit=dev && npm cache clean --force
 
 # Build frontend
 FROM base AS frontend-builder
