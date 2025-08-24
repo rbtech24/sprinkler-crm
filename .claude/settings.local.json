@@ -52,7 +52,10 @@
       "Bash(ping:*)",
       "Bash(git rm:*)",
       "Bash(PORT=3012 npm run dev)",
-      "Bash(start http://localhost:3013/auth/login)"
+      "Bash(start http://localhost:3013/auth/login)",
+      "Bash(start http://localhost:3013/support)",
+      "Bash(start http://localhost:3013/support-test)",
+      "Bash(start http://localhost:3014/support)"
     ],
     "deny": [],
     "ask": []
