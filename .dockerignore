@@ -1,0 +1,115 @@
+# Dependencies
+backend/node_modules
+frontend/node_modules
+node_modules/
+*/node_modules/
+
+# Build outputs
+frontend/.next/
+frontend/out/
+backend/dist/
+backend/build/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# Logs
+*.log
+logs/
+backend/logs/
+frontend/logs/
+
+# Runtime data
+backend/uploads/
+backend/data/*.db-*
+backend/database.sqlite-*
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+.npm
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Testing
+__tests__/
+tests/
+test/
+*.test.js
+*.spec.js
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+docs/
+README*
+CHANGELOG*
+
+# Development scripts
+scripts/
+*.sh
+*.ps1
+*.bat
+
+# Test files
+**/test-*
+**/*test*
+comprehensive-*.js
+debug-*.html
+test-*.js
+run-tests.*
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Build cache
+.cache/
+.parcel-cache/
+
+# Next.js specific
+frontend/.next/
+frontend/out/
+
+# TypeScript
+*.tsbuildinfo
+
+# ESLint
+.eslintcache
