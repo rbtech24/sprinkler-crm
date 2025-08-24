@@ -1,11 +1,11 @@
 "use client";
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { MobileInspectionForm } from '@/components/inspections/mobile-inspection-form';
 import { IrrigationInspection } from '@/types/irrigation-inspection';
 
-export default function NewInspectionPage() {
+function InspectionFormWrapper() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -54,5 +54,13 @@ export default function NewInspectionPage() {
         onAutoSave={handleAutoSave}
       />
     </div>
+  );
+}
+
+export default function NewInspectionPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center">Loading...</div>}>
+      <InspectionFormWrapper />
+    </Suspense>
   );
 }
