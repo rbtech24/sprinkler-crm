@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { MobileInspectionForm } from '@/components/inspections/mobile-inspection-form';
 import { SignaturePad } from '@/components/inspections/signature-pad';
@@ -19,7 +19,7 @@ import {
   Edit3
 } from 'lucide-react';
 
-export default function InspectionByIdPage() {
+function InspectionWrapper() {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -497,4 +497,19 @@ export default function InspectionByIdPage() {
   }
 
   return null;
+}
+
+export default function InspectionByIdPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading inspection...</p>
+        </div>
+      </div>
+    }>
+      <InspectionWrapper />
+    </Suspense>
+  );
 }

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function InspectionIndexPage() {
+function InspectionRedirectHandler() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -33,5 +33,20 @@ export default function InspectionIndexPage() {
         <p className="text-gray-600">Redirecting...</p>
       </div>
     </div>
+  );
+}
+
+export default function InspectionIndexPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <InspectionRedirectHandler />
+    </Suspense>
   );
 }
