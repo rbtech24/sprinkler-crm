@@ -11,7 +11,7 @@ COPY frontend/package*.json ./frontend/
 
 # Install dependencies
 RUN cd backend && npm ci --omit=dev && npm cache clean --force
-RUN cd frontend && npm ci --omit=dev && npm cache clean --force
+RUN cd frontend && npm ci && npm cache clean --force
 
 # Build frontend
 FROM base AS frontend-builder
