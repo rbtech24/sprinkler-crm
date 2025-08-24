@@ -30,6 +30,7 @@ const { errorHandler } = require('./middleware/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
 
 // Security and performance middleware
 app.use(helmet());
@@ -153,8 +154,8 @@ app.use('*', (req, res) => {
 app.use(errorHandler);
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Sprinkler Repair SaaS API running on port ${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`🚀 Sprinkler Repair SaaS API running on ${HOST}:${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/health`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
 });

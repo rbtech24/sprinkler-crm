@@ -3,11 +3,11 @@ set -e
 
 # Start backend on port 3001
 cd /app/backend
-PORT=3001 node src/server.js &
+PORT=3001 HOST=0.0.0.0 node src/server.js &
 
 # Start frontend on port 3002  
 cd /app/frontend
-PORT=3002 NEXT_PUBLIC_API_URL=http://localhost:3001/api node server.js &
+PORT=3002 HOSTNAME=0.0.0.0 node server.js &
 
 # Start nginx on port 3000
 nginx -g 'daemon off;' &
