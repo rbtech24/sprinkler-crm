@@ -141,52 +141,12 @@ export default function LandingPage() {
                     </div>
                   </div>
                   
-                  {/* Inspection Image Placeholder */}
-                  <div className="relative bg-gradient-to-br from-slate-50 to-slate-100 aspect-[4/3]">
-                    {/* Actual inspection image */}
-                    <img 
-                      src="/images/sampleinspection.png" 
-                      alt="Professional sprinkler inspection report showing zone mapping, issue documentation, and photo evidence" 
-                      className="w-full h-full object-cover"
-                    />
-                    
-                    {/* Overlay badges to show features */}
-                    <div className="absolute top-4 left-4">
-                      <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full border border-emerald-200">
-                        <div className="flex items-center space-x-2">
-                          <MapPin className="w-4 h-4 text-emerald-600" />
-                          <span className="text-sm font-medium text-slate-800">GPS Tagged</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="absolute top-4 right-4">
-                      <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full border border-blue-200">
-                        <div className="flex items-center space-x-2">
-                          <FileText className="w-4 h-4 text-blue-600" />
-                          <span className="text-sm font-medium text-slate-800">PDF Ready</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Quick Stats Footer */}
-                  <div className="p-4 bg-slate-50 border-t">
-                    <div className="flex justify-between text-sm">
-                      <div className="text-center">
-                        <div className="font-semibold text-emerald-600">12</div>
-                        <div className="text-slate-600">Zones Checked</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="font-semibold text-blue-600">8</div>
-                        <div className="text-slate-600">Photos Taken</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="font-semibold text-purple-600">$385</div>
-                        <div className="text-slate-600">Est. Repairs</div>
-                      </div>
-                    </div>
-                  </div>
+                  {/* Actual inspection report image */}
+                  <img 
+                    src="/images/sampleinspection.png" 
+                    alt="Professional sprinkler inspection report showing zone mapping, issue documentation, and photo evidence" 
+                    className="w-full h-full object-cover rounded-lg"
+                  />
                 </div>
               </div>
             </div>
