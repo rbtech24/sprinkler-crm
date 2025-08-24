@@ -83,7 +83,8 @@ CHANGELOG*
 
 # Development scripts
 scripts/
-*.sh
+run-tests.sh
+pre-commit.sh
 *.ps1
 *.bat
 
