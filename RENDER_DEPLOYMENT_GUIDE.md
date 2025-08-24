@@ -7,9 +7,9 @@
 1. **Create a new Web Service** on Render.com
 2. **Connect your GitHub repository** (https://github.com/rbtech24/sprinkler-crm)
 3. **Configure the service**:
-   - **Root Directory**: `backend`
-   - **Build Command**: `npm ci --only=production`
-   - **Start Command**: `node src/server.js`
+   - **Root Directory**: (leave empty - deploy from repository root)
+   - **Build Command**: `cd backend && npm ci --only=production`
+   - **Start Command**: `cd backend && node src/server.js`
    - **Environment**: `Node.js`
    - **Region**: Choose closest to your users
 
@@ -19,7 +19,7 @@
    JWT_SECRET=your-super-secure-jwt-secret-32-chars-min
    SESSION_SECRET=your-super-secure-session-secret-32-chars-min
    FRONTEND_URL=https://your-frontend.onrender.com
-   DATABASE_URL=sqlite:/opt/render/project/src/data/sprinkler_repair.db
+   DATABASE_URL=sqlite:/opt/render/project/backend/data/sprinkler_repair.db
    BASE_URL=https://your-backend.onrender.com
    ```
 
@@ -32,9 +32,9 @@
 1. **Create a new Web Service** on Render.com
 2. **Connect the same GitHub repository**
 3. **Configure the service**:
-   - **Root Directory**: `frontend`
-   - **Build Command**: `npm ci && npm run build`
-   - **Start Command**: `npm start`
+   - **Root Directory**: (leave empty - deploy from repository root)
+   - **Build Command**: `cd frontend && npm ci && npm run build`
+   - **Start Command**: `cd frontend && npm start`
    - **Environment**: `Node.js`
    - **Region**: Same as backend
 
