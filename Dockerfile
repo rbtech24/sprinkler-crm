@@ -21,8 +21,8 @@ WORKDIR /app/frontend
 COPY --from=deps /app/frontend/node_modules ./node_modules
 COPY frontend/ .
 
-# Set API URL for build
-ENV NEXT_PUBLIC_API_URL=http://localhost:3001/api
+# Set API URL for build - use relative path for production
+ENV NEXT_PUBLIC_API_URL=/api
 
 # Build frontend
 RUN npm run build

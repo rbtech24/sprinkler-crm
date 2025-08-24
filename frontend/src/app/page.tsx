@@ -31,14 +31,14 @@ export default function LandingPage() {
       <nav className="bg-white/95 backdrop-blur-sm shadow-sm border-b border-emerald-100 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
+            <Link href="/" className="flex items-center">
               <div className="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
                 <Droplets className="h-6 w-6 text-white" />
               </div>
               <h1 className="text-xl font-bold text-emerald-700">
                 SprinklerPro CRM
               </h1>
-            </div>
+            </Link>
             <div className="hidden md:flex items-center space-x-6">
               <a href="#workflow" className="text-slate-600 hover:text-emerald-600 transition-colors">How It Works</a>
               <a href="#features" className="text-slate-600 hover:text-emerald-600 transition-colors">Features</a>
@@ -516,16 +516,11 @@ export default function LandingPage() {
               Join hundreds of sprinkler repair contractors who&apos;ve already transformed their business. 
               Start your free trial today - no credit card required.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex justify-center">
               <Link href="/auth/register">
                 <Button className="bg-white text-slate-900 hover:bg-slate-100 px-8 py-4 text-lg font-semibold shadow-lg">
                   Start Your Free Trial
                   <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <Link href="/auth/login">
-                <Button variant="outline" className="border-white text-white hover:bg-white hover:text-slate-900 px-8 py-4 text-lg">
-                  Sign In to Your Account
                 </Button>
               </Link>
             </div>

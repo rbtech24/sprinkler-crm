@@ -54,6 +54,7 @@ const corsOptions = {
     const prodOrigins = [
       process.env.FRONTEND_URL,
       process.env.FRONTEND_DOMAIN,
+      'https://sprinkler-crm.onrender.com',
       // Add any additional production domains
     ].filter(Boolean);
     
