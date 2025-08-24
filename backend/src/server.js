@@ -96,6 +96,21 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({
+    message: 'SprinklerPro CRM API',
+    version: process.env.npm_package_version || '1.0.0',
+    status: 'running',
+    endpoints: {
+      health: '/health',
+      auth: '/api/auth',
+      dashboard: '/api/dashboard',
+      documentation: 'See README.md for full API documentation'
+    }
+  });
+});
+
 // Public routes (no auth required)
 app.use('/api/auth', authRoutes);
 app.use('/api/customer-portal', customerPortalRoutes);
