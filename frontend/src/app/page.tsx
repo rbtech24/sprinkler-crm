@@ -126,42 +126,68 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Interactive Demo Card */}
+            {/* Inspection Demo Image */}
             <div className="lg:col-span-5">
               <div className="relative">
                 <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+                  {/* Header Bar */}
                   <div className="bg-emerald-500 p-4">
                     <div className="flex items-center justify-between text-white">
-                      <span className="font-semibold">Inspection in Progress</span>
+                      <span className="font-semibold">Inspection Report</span>
                       <div className="flex items-center space-x-2">
                         <div className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></div>
-                        <span className="text-sm">Live</span>
+                        <span className="text-sm">Live Demo</span>
                       </div>
                     </div>
                   </div>
-                  <div className="p-6">
-                    <div className="flex items-center mb-4">
-                      <MapPin className="w-5 h-5 text-emerald-600 mr-2" />
-                      <span className="font-medium text-slate-900">Smith Residence - Zone 4</span>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center p-3 bg-red-50 rounded-lg border border-red-200">
-                        <span className="text-red-700 font-medium">Broken sprinkler head</span>
-                        <Camera className="w-4 h-4 text-red-600" />
-                      </div>
-                      <div className="flex justify-between items-center p-3 bg-yellow-50 rounded-lg border border-yellow-200">
-                        <span className="text-yellow-700 font-medium">Low water pressure</span>
-                        <Gauge className="w-4 h-4 text-yellow-600" />
-                      </div>
-                      <div className="flex justify-between items-center p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-                        <span className="text-emerald-700 font-medium">Zone 1-3: Perfect</span>
-                        <CheckCircle className="w-4 h-4 text-emerald-600" />
+                  
+                  {/* Inspection Image Placeholder */}
+                  <div className="relative bg-gradient-to-br from-slate-50 to-slate-100 aspect-[4/3]">
+                    {/* Replace this div with your actual inspection image */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                          <Camera className="w-8 h-8 text-emerald-600" />
+                        </div>
+                        <p className="text-slate-600 text-lg font-medium">Inspection Report Example</p>
+                        <p className="text-slate-500 text-sm mt-1">Professional documentation with photos</p>
                       </div>
                     </div>
-                    <div className="mt-6 pt-4 border-t border-slate-200">
-                      <div className="flex justify-between items-center">
-                        <span className="text-slate-600">Estimated Repair Cost:</span>
-                        <span className="font-bold text-2xl text-emerald-600">$185</span>
+                    
+                    {/* Overlay badges to show features */}
+                    <div className="absolute top-4 left-4">
+                      <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full border border-emerald-200">
+                        <div className="flex items-center space-x-2">
+                          <MapPin className="w-4 h-4 text-emerald-600" />
+                          <span className="text-sm font-medium text-slate-800">GPS Tagged</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="absolute top-4 right-4">
+                      <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full border border-blue-200">
+                        <div className="flex items-center space-x-2">
+                          <FileText className="w-4 h-4 text-blue-600" />
+                          <span className="text-sm font-medium text-slate-800">PDF Ready</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Quick Stats Footer */}
+                  <div className="p-4 bg-slate-50 border-t">
+                    <div className="flex justify-between text-sm">
+                      <div className="text-center">
+                        <div className="font-semibold text-emerald-600">12</div>
+                        <div className="text-slate-600">Zones Checked</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="font-semibold text-blue-600">8</div>
+                        <div className="text-slate-600">Photos Taken</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="font-semibold text-purple-600">$385</div>
+                        <div className="text-slate-600">Est. Repairs</div>
                       </div>
                     </div>
                   </div>

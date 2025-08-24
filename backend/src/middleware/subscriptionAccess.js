@@ -16,6 +16,13 @@ const PLAN_FEATURES = {
     'dashboard:basic',
     'profile:view',
     'profile:edit',
+    // Basic client management (required for inspections)
+    'clients:view',
+    'clients:create',
+    'clients:edit',
+    'sites:view',
+    'sites:create',
+    'sites:edit',
   ],
   full_crm: [
     // All inspection features plus:
