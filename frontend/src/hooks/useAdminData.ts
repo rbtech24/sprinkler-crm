@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ApiClient } from '@/lib/api'
+import { apiClient } from '@/lib/api'
 
 interface AdminKPIData {
   activeCompanies: {
@@ -107,7 +107,7 @@ export function useAdminKPIs() {
       try {
         setLoading(true)
         setError(null)
-        const response = await ApiClient.get('/admin/dashboard/kpis')
+        const response = await apiClient.get('/admin/dashboard/kpis')
         setData(response)
       } catch (err) {
         setError('Failed to fetch admin KPIs')
@@ -133,7 +133,7 @@ export function usePlatformHealth() {
       try {
         setLoading(true)
         setError(null)
-        const response = await ApiClient.get('/admin/dashboard/health')
+        const response = await apiClient.get('/admin/dashboard/health')
         setData(response)
       } catch (err) {
         setError('Failed to fetch platform health')
@@ -159,7 +159,7 @@ export function useBillingAnalytics() {
       try {
         setLoading(true)
         setError(null)
-        const response = await ApiClient.get('/admin/billing-analytics')
+        const response = await apiClient.get('/admin/billing-analytics')
         setData(response)
       } catch (err) {
         setError('Failed to fetch billing analytics')
@@ -185,7 +185,7 @@ export function useActivityFeed() {
       try {
         setLoading(true)
         setError(null)
-        const response = await ApiClient.get('/admin/activity-feed')
+        const response = await apiClient.get('/admin/activity-feed')
         setData(response)
       } catch (err) {
         setError('Failed to fetch activity feed')
